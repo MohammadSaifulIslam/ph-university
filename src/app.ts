@@ -1,6 +1,7 @@
 import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
 import globalErrorHandler from './app/middlewers/globalErrorHandler';
+import notFound from './app/middlewers/notFound';
 import { studentRoutes } from './app/modules/students/students.routes';
 import { userRouter } from './app/modules/users/users.routes';
 const app: Application = express();
@@ -16,6 +17,8 @@ app.use('/api/v1/users', userRouter);
 app.get('/', (req: Request, res: Response) => {
   res.send('Welcome to the PH University Server');
 });
+
+app.use(notFound);
 
 // global error handler
 app.use(globalErrorHandler);
