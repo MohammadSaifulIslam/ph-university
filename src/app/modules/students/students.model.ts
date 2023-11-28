@@ -44,7 +44,6 @@ const StudentSchema = new Schema<TStudent>(
     id: {
       type: String,
       required: [true, 'Student ID is required'],
-      unique: true,
     },
     user: {
       type: Schema.Types.ObjectId,
