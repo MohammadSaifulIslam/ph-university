@@ -17,22 +17,24 @@ const LocalGuardianValidationSchema = z.object({
   address: z.string().min(1).max(500),
 });
 
-const StudentValidationSchema = z.object({
-  id: z.string().min(1).max(255),
-  name: z.object({
-    firstName: z.string().min(1).max(255),
-    lastName: z.string().min(1).max(255),
+const createStudentValidationSchema = z.object({
+  password: z.string().min(8),
+  student: z.object({
+    name: z.object({
+      firstName: z.string().min(1).max(255),
+      lastName: z.string().min(1).max(255),
+    }),
+    email: z.string().min(1).max(255).email(),
+    contactNo: z.string().min(1).max(20),
+    emergencyContactNo: z.string().min(1).max(20),
+    gender: z.enum(['male', 'female', 'other']),
+    bloodGroup: z.enum(['A+', 'A-', 'AB+', 'AB-', 'B+', 'B-', 'O+', 'O-']),
+    dateOfBirth: z.string().min(1).max(255),
+    presentAddress: z.string().min(1).max(500),
+    permanentAddress: z.string().min(1).max(500),
+    gaurdian: GaurdianValidationSchema,
+    localGuardian: LocalGuardianValidationSchema,
   }),
-  email: z.string().min(1).max(255).email(),
-  contactNo: z.string().min(1).max(20),
-  emergencyContactNo: z.string().min(1).max(20),
-  gender: z.enum(['male', 'female', 'other']),
-  bloodGroup: z.enum(['A+', 'A-', 'AB+', 'AB-', 'B+', 'B-', 'O+', 'O-']),
-  dateOfBirth: z.string().min(1).max(255),
-  presentAddress: z.string().min(1).max(500),
-  permanentAddress: z.string().min(1).max(500),
-  gaurdian: GaurdianValidationSchema,
-  localGuardian: LocalGuardianValidationSchema,
 });
 
-export default StudentValidationSchema;
+export const studentValidations = { createStudentValidationSchema };
