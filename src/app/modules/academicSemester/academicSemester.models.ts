@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import { TAcademicSemester } from './academicSemester.interface';
 
-const AcademicSemesterModel = new Schema<TAcademicSemester>(
+const AcademicSemesterSchema = new Schema<TAcademicSemester>(
   {
     name: {
       type: String,
@@ -63,9 +63,21 @@ const AcademicSemesterModel = new Schema<TAcademicSemester>(
   { timestamps: true },
 );
 
+// check duplicate semester in the same year
+AcademicSemesterSchema.pre('save', async function (next) {
+  const isAcademicSemesterExist = await AcademicSemester.findOne({
+    year: this.year,
+    name: this.name,
+  });
+  if (isAcademicSemesterExist) {
+    throw new Error('Semester is already exist!');
+  }
+  next();
+});
+
 const AcademicSemester = mongoose.model<TAcademicSemester>(
   'AcademicSemester',
-  AcademicSemesterModel,
+  AcademicSemesterSchema,
 );
 
 export default AcademicSemester;

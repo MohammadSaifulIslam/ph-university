@@ -12,6 +12,9 @@ export type TMonth =
   | 'November'
   | 'December';
 
+export type TAcademicSemesterCode = {
+  [key: string]: string;
+};
 export type TAcademicSemester = {
   name: 'Autumn' | 'Summer' | 'Fall';
   year: string;
