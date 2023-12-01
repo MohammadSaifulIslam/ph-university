@@ -44,6 +44,7 @@ const StudentSchema = new Schema<TStudent>(
     id: {
       type: String,
       required: [true, 'Student ID is required'],
+      unique: true,
     },
     user: {
       type: Schema.Types.ObjectId,
@@ -85,6 +86,19 @@ const StudentSchema = new Schema<TStudent>(
     permanentAddress: {
       type: String,
       required: [true, 'Permanent address is required'],
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    profileImage: {
+      type: String,
+      required: [true, 'Profile Image is required'],
+    },
+    academicSemester: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicSemester',
+      required: [true, 'Academic Semester is required'],
     },
     gaurdian: {
       type: GaurdianSchema,

@@ -34,6 +34,7 @@ const createStudentValidationSchema = z.object({
     permanentAddress: z.string().min(1).max(500),
     gaurdian: GaurdianValidationSchema,
     localGuardian: LocalGuardianValidationSchema,
+    profileImage: z.string(),
   }),
 });
 
