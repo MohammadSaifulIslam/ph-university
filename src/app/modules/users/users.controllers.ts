@@ -5,7 +5,6 @@ import { userServices } from './users.services';
 
 const createStudent = catchAsync(async (req, res) => {
   const { password, student } = req.body;
-  console.log('api hit');
   // will call service function
   const result = await userServices.createStudentIntoDb(password, student);
   // will send response data
