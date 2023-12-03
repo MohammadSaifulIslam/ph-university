@@ -95,10 +95,15 @@ const StudentSchema = new Schema<TStudent>(
       type: String,
       required: [true, 'Profile Image is required'],
     },
-    academicSemester: {
+    admissionSemester: {
       type: Schema.Types.ObjectId,
       ref: 'AcademicSemester',
-      required: [true, 'Academic Semester is required'],
+      required: [true, 'Admission Semester is required'],
+    },
+    academicDepartment: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicDepartment',
+      required: [true, 'Academic Department is required'],
     },
     gaurdian: {
       type: GaurdianSchema,

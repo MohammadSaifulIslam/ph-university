@@ -14,7 +14,7 @@ const createStudentIntoDb = async (password: string, payload: TStudent) => {
   userData.role = 'student';
 
   const admissionSeasion = await AcademicSemester.findById(
-    payload.academicSemester,
+    payload.admissionSemester,
   );
   if (admissionSeasion) {
     userData.id = await genarateId(admissionSeasion);

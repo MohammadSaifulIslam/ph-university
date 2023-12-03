@@ -1,7 +1,10 @@
 import Student from './students.model';
 
 const getAllStudentFromDb = async () => {
-  const result = await Student.find();
+  const result = await Student.find().populate('admissionSemester').populate({
+    path: 'academicDepartment',
+    populate: 'academicFaculty',
+  });
   return result;
 };
 
