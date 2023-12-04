@@ -25,7 +25,20 @@ const getSingleStudent = catchAsync(async (req, res, next) => {
     data: result,
   });
 });
+const deleteSingleStudent = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+
+  // will call service function
+  const result = await studentServices.deleteStudentFronDb(id);
+  // will send response data
+  res.status(200).json({
+    status: true,
+    message: 'Student data deleted successfully',
+    data: result,
+  });
+});
 export const studentControllers = {
   getAllStudent,
   getSingleStudent,
+  deleteSingleStudent,
 };
