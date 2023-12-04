@@ -2,6 +2,7 @@ import httpStatus from 'http-status';
 import mongoose from 'mongoose';
 import AppError from '../../errors/AppError';
 import { User } from '../users/users.models';
+import { TStudent } from './students.interface';
 import Student from './students.model';
 
 const getAllStudentFromDb = async () => {
@@ -15,6 +16,32 @@ const getAllStudentFromDb = async () => {
 const getSingleStudentFromDb = async (id: string) => {
   const filter = { _id: id };
   const result = await Student.findOne(filter);
+  return result;
+};
+const updateSingleStudentintoDb = async (id: string, payload: TStudent) => {
+  const { name, gaurdian, localGuardian, ...remaingStudentData } = payload;
+  const modifiedStudent: Record<string, unknown> = { ...remaingStudentData };
+
+  if (name && Object.keys(name).length) {
+    for (const [key, value] of Object.entries(name)) {
+      modifiedStudent[`name.${key}`] = value;
+    }
+  }
+  if (gaurdian && Object.keys(gaurdian).length) {
+    for (const [key, value] of Object.entries(gaurdian)) {
+      modifiedStudent[`gaurdian.${key}`] = value;
+    }
+  }
+  if (localGuardian && Object.keys(localGuardian).length) {
+    for (const [key, value] of Object.entries(localGuardian)) {
+      modifiedStudent[`localGuardian.${key}`] = value;
+    }
+  }
+
+  const result = await Student.findOneAndUpdate({ id }, modifiedStudent, {
+    new: true,
+    runValidators: true,
+  });
   return result;
 };
 
@@ -52,4 +79,5 @@ export const studentServices = {
   getAllStudentFromDb,
   getSingleStudentFromDb,
   deleteStudentFronDb,
+  updateSingleStudentintoDb,
 };

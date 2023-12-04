@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const GaurdianValidationSchema = z.object({
+const createGaurdianValidationSchema = z.object({
   fatherName: z.string().min(1).max(255),
   fatherOccupation: z.string().min(1).max(255),
   fatherContactNo: z.string().min(1).max(20),
@@ -9,7 +9,7 @@ const GaurdianValidationSchema = z.object({
   motherContactNo: z.string().min(1).max(20),
 });
 
-const LocalGuardianValidationSchema = z.object({
+const createLocalGuardianValidationSchema = z.object({
   name: z.string().min(1).max(255),
   occupation: z.string().min(1).max(255),
   relation: z.string().min(1).max(255),
@@ -32,11 +32,54 @@ const createStudentValidationSchema = z.object({
     dateOfBirth: z.string().min(1).max(255),
     presentAddress: z.string().min(1).max(500),
     permanentAddress: z.string().min(1).max(500),
-    gaurdian: GaurdianValidationSchema,
-    localGuardian: LocalGuardianValidationSchema,
+    gaurdian: createGaurdianValidationSchema,
+    localGuardian: createLocalGuardianValidationSchema,
     profileImage: z.string(),
     admissionSemester: z.string(),
   }),
 });
 
-export const studentValidations = { createStudentValidationSchema };
+const updateGaurdianValidationSchema = z.object({
+  fatherName: z.string().min(1).max(255).optional(),
+  fatherOccupation: z.string().min(1).max(255).optional(),
+  fatherContactNo: z.string().min(1).max(20).optional(),
+  motherName: z.string().min(1).max(255).optional(),
+  motherOccupation: z.string().min(1).max(255).optional(),
+  motherContactNo: z.string().min(1).max(20).optional(),
+});
+
+const updateLocalGuardianValidationSchema = z.object({
+  name: z.string().min(1).max(255).optional(),
+  occupation: z.string().min(1).max(255).optional(),
+  relation: z.string().min(1).max(255).optional(),
+  contactNo: z.string().min(1).max(20).optional(),
+  address: z.string().min(1).max(500).optional(),
+});
+
+const updateStudentValidationSchema = z.object({
+  student: z.object({
+    name: z.object({
+      firstName: z.string().min(1).max(255).optional(),
+      lastName: z.string().min(1).max(255).optional(),
+    }),
+    email: z.string().min(1).max(255).email().optional(),
+    contactNo: z.string().min(1).max(20).optional(),
+    emergencyContactNo: z.string().min(1).max(20).optional(),
+    gender: z.enum(['male', 'female', 'other']).optional(),
+    bloodGroup: z
+      .enum(['A+', 'A-', 'AB+', 'AB-', 'B+', 'B-', 'O+', 'O-'])
+      .optional(),
+    dateOfBirth: z.string().min(1).max(255).optional(),
+    presentAddress: z.string().min(1).max(500).optional(),
+    permanentAddress: z.string().min(1).max(500).optional(),
+    gaurdian: updateGaurdianValidationSchema.optional(),
+    localGuardian: updateLocalGuardianValidationSchema.optional(),
+    profileImage: z.string().optional(),
+    admissionSemester: z.string().optional(),
+  }),
+});
+
+export const studentValidations = {
+  createStudentValidationSchema,
+  updateStudentValidationSchema,
+};
