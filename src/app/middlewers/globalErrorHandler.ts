@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ErrorRequestHandler } from 'express';
 import { ZodError } from 'zod';
+import AppError from '../errors/AppError';
 import handleCastError from '../errors/handleCastError';
 import handleDuplicateError from '../errors/handleDuplicateError';
 import handleValidationError from '../errors/handleValidationError';
@@ -10,8 +11,8 @@ import zodErrorHandler from '../errors/zodErrorHadler';
 import { TErrorSource } from '../interface/error';
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  let statusCode = err.status || 500;
-  let message = err.message || 'Someting went wrong!';
+  let statusCode = 500;
+  let message = 'Someting went wrong!';
 
   let errorSource: TErrorSource = [
     {
@@ -25,7 +26,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
     errorSource = simplifiedError.errorSource;
-  } else if (err?.message === 'ValidationError') {
+  } else if (err?.name === 'ValidationError') {
     console.log('dfjasfj');
     const simplifiedError = handleValidationError(err);
     statusCode = simplifiedError.statusCode;
@@ -41,6 +42,23 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
     errorSource = simplifiedError.errorSource;
+  } else if (err instanceof AppError) {
+    statusCode = err.status;
+    message = err.message;
+    errorSource = [
+      {
+        path: '',
+        message: err.message,
+      },
+    ];
+  } else if (err instanceof Error) {
+    message = err.message;
+    errorSource = [
+      {
+        path: '',
+        message: err.message,
+      },
+    ];
   }
 
   return res.status(statusCode).json({
