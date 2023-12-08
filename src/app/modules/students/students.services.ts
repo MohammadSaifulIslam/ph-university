@@ -9,7 +9,7 @@ const getAllStudentFromDb = async (query: Record<string, unknown>) => {
   let searchTerm = '';
   const queryObj = { ...query };
 
-  const excludeFields = ['searchTerm', 'limit', 'sort'];
+  const excludeFields = ['searchTerm', 'limit', 'sort', 'page', 'fields'];
   excludeFields.forEach((query) => delete queryObj[query]);
 
   if (query?.searchTerm) {
@@ -38,14 +38,29 @@ const getAllStudentFromDb = async (query: Record<string, unknown>) => {
   if (query?.limit) {
     limit = Number(query.limit);
   }
-  const limitQuery = await sortQuery
+
+  let page = 0;
+  let skip: number = 0;
+  if (query?.page) {
+    page = Number(query.page);
+    skip = (page - 1) * limit;
+  }
+  const paginateQuery = sortQuery.skip(skip);
+
+  const limitQuery = paginateQuery
     .limit(limit)
     .populate('admissionSemester')
     .populate({
       path: 'academicDepartment',
       populate: 'academicFaculty',
     });
-  return limitQuery;
+
+  let fields = '-__v';
+  if (query?.fields) {
+    fields = (query?.fields as string).split(',').join(' ');
+  }
+  const fieldsQuery = await limitQuery.select(fields);
+  return fieldsQuery;
 };
 
 const getSingleStudentFromDb = async (id: string) => {
