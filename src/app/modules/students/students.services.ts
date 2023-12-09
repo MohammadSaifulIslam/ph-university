@@ -1,66 +1,32 @@
 import httpStatus from 'http-status';
 import mongoose from 'mongoose';
+import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
 import { User } from '../users/users.models';
 import { TStudent } from './students.interface';
 import Student from './students.model';
 
 const getAllStudentFromDb = async (query: Record<string, unknown>) => {
-  let searchTerm = '';
-  const queryObj = { ...query };
+  const studentSearchableFields = ['email', 'name.firstName', 'address'];
+  const studentQuery = new QueryBuilder(
+    Student.find()
+      .populate('admissionSemester')
+      .populate({
+        path: 'academicDepartment',
+        populate: {
+          path: 'academicFaculty',
+        },
+      }),
+    query,
+  )
+    .search(studentSearchableFields)
+    .filter()
+    .sort()
+    .fields()
+    .paginate();
 
-  const excludeFields = ['searchTerm', 'limit', 'sort', 'page', 'fields'];
-  excludeFields.forEach((query) => delete queryObj[query]);
-
-  if (query?.searchTerm) {
-    searchTerm = query.searchTerm as string;
-  }
-  // {email: $regax: 'df', $options : 'i'}
-  const searchFields = ['email', 'name.firstName', 'address'];
-  const sserchQuery = Student.find({
-    $or: searchFields.map((field) => ({
-      [field]: { $regex: searchTerm, $options: 'i' },
-    })),
-  });
-
-  const filteringQuery = sserchQuery.find(queryObj);
-
-  // SORTING FUNCTIONALITY:
-
-  let sort = '-createdAt'; // SET DEFAULT VALUE
-  if (query?.sort) {
-    sort = query.sort as string;
-  }
-  const sortQuery = filteringQuery.sort(sort);
-
-  // LIMITING FUNCTIONALITY
-  let limit = 1;
-  if (query?.limit) {
-    limit = Number(query.limit);
-  }
-
-  let page = 0;
-  let skip: number = 0;
-  if (query?.page) {
-    page = Number(query.page);
-    skip = (page - 1) * limit;
-  }
-  const paginateQuery = sortQuery.skip(skip);
-
-  const limitQuery = paginateQuery
-    .limit(limit)
-    .populate('admissionSemester')
-    .populate({
-      path: 'academicDepartment',
-      populate: 'academicFaculty',
-    });
-
-  let fields = '-__v';
-  if (query?.fields) {
-    fields = (query?.fields as string).split(',').join(' ');
-  }
-  const fieldsQuery = await limitQuery.select(fields);
-  return fieldsQuery;
+  const result = await studentQuery.modelQuery;
+  return result;
 };
 
 const getSingleStudentFromDb = async (id: string) => {
@@ -92,6 +58,7 @@ const updateSingleStudentintoDb = async (id: string, payload: TStudent) => {
     new: true,
     runValidators: true,
   });
+
   return result;
 };
 
