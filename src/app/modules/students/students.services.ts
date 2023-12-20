@@ -30,10 +30,10 @@ const getAllStudentFromDb = async (query: Record<string, unknown>) => {
 };
 
 const getSingleStudentFromDb = async (id: string) => {
-  const filter = { _id: id };
-  const result = await Student.findOne(filter);
+  const result = await Student.findById(id);
   return result;
 };
+
 const updateSingleStudentintoDb = async (id: string, payload: TStudent) => {
   const { name, gaurdian, localGuardian, ...remaingStudentData } = payload;
   const modifiedStudent: Record<string, unknown> = { ...remaingStudentData };
@@ -54,7 +54,7 @@ const updateSingleStudentintoDb = async (id: string, payload: TStudent) => {
     }
   }
 
-  const result = await Student.findOneAndUpdate({ id }, modifiedStudent, {
+  const result = await Student.findByIdAndUpdate(id, modifiedStudent, {
     new: true,
     runValidators: true,
   });
@@ -64,19 +64,19 @@ const updateSingleStudentintoDb = async (id: string, payload: TStudent) => {
 
 const deleteStudentFronDb = async (id: string) => {
   const session = await mongoose.startSession();
-  console.log(id);
+
   try {
     await session.startTransaction();
-    const deletedStudent = await Student.findOneAndUpdate(
-      { id: id },
+    const deletedStudent = await Student.findByIdAndUpdate(
+      id,
       { isDeleted: true },
       { new: true, session },
     );
     if (!deletedStudent) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Faild to delete student');
     }
-    const deletedUser = await User.findOneAndUpdate(
-      { id: id },
+    const deletedUser = await User.findByIdAndUpdate(
+      id,
       { isDeleted: true },
       { new: true, session },
     );
@@ -92,6 +92,7 @@ const deleteStudentFronDb = async (id: string) => {
     throw new AppError(httpStatus.BAD_REQUEST, 'Faild to delete student');
   }
 };
+
 export const studentServices = {
   getAllStudentFromDb,
   getSingleStudentFromDb,
