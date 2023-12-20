@@ -14,9 +14,14 @@ const getSingleCourseFromDb = async (id: string) => {
   const result = await Course.findById(id);
   return result;
 };
+const deleteCourseFromDb = async (id: string) => {
+  const result = await Course.findByIdAndUpdate(id, { isDeleted: true });
+  return result;
+};
 
-export const academicSemesterServices = {
+export const courseServices = {
   createCourseIntoDb,
   getAllCourseFromDb,
   getSingleCourseFromDb,
+  deleteCourseFromDb,
 };
