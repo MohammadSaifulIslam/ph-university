@@ -12,28 +12,37 @@ const preRequisiteCoursesSchema = new Schema({
   },
 });
 
-const courseSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: [true, 'Title is required'],
+const courseSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      unique: true,
+      required: [true, 'Title is required'],
+    },
+    prefix: {
+      type: String,
+      required: [true, 'Prefix is required'],
+    },
+    code: {
+      type: Number,
+      unique: true,
+      required: [true, 'Code is required'],
+    },
+    credits: {
+      type: Number,
+      required: [true, 'Credits are required'],
+    },
+    preRequisiteCourses: {
+      type: [preRequisiteCoursesSchema],
+      default: [],
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
-  prefix: {
-    type: String,
-    required: [true, 'Prefix is required'],
-  },
-  code: {
-    type: Number,
-    required: [true, 'Code is required'],
-  },
-  credits: {
-    type: Number,
-    required: [true, 'Credits are required'],
-  },
-  preRequisiteCourses: {
-    type: [preRequisiteCoursesSchema],
-    default: [],
-  },
-});
+  { timestamps: true },
+);
 
 const Course = mongoose.model('Course', courseSchema);
 

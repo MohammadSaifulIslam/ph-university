@@ -19,8 +19,12 @@ const createCourseSchema = z.object({
     .int('Credits must be an integer')
     .positive('Credits must be positive'),
   preRequisiteCourses: z.array(createPreRequisiteCoursesSchema).default([]),
+  isDeleted: z.boolean().default(false),
 });
+
+const updateCourseSchema = createCourseSchema.partial();
 
 export const courseValidation = {
   createCourseSchema,
+  updateCourseSchema,
 };
