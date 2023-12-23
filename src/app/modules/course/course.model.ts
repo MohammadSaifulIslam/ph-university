@@ -1,18 +1,26 @@
 import mongoose, { Schema } from 'mongoose';
+import {
+  TCourse,
+  TCourseFaculty,
+  TPreRequisiteCourses,
+} from './course.interface';
 
-const preRequisiteCoursesSchema = new Schema({
-  course: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: [true, 'Course ID is required'],
-    ref: 'Course',
+const preRequisiteCoursesSchema = new Schema<TPreRequisiteCourses>(
+  {
+    course: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: [true, 'Course ID is required'],
+      ref: 'Course',
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
-  isDeleted: {
-    type: Boolean,
-    default: false,
-  },
-});
+  { _id: false },
+);
 
-const courseSchema = new mongoose.Schema(
+const courseSchema = new mongoose.Schema<TCourse>(
   {
     title: {
       type: String,
@@ -44,6 +52,25 @@ const courseSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-const Course = mongoose.model('Course', courseSchema);
+export const Course = mongoose.model('Course', courseSchema);
 
-export default Course;
+const courseWithFacultySchema = new Schema<TCourseFaculty>(
+  {
+    course: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: [true, 'Course ID is required'],
+      unique: true,
+      ref: 'Course',
+    },
+    faculties: {
+      type: [mongoose.Schema.Types.ObjectId],
+      required: [true, 'Faculty ID is required'],
+      ref: 'Faculty',
+    },
+  },
+  { timestamps: true },
+);
+export const CourseFaculty = mongoose.model(
+  'CourseFaculty',
+  courseWithFacultySchema,
+);
