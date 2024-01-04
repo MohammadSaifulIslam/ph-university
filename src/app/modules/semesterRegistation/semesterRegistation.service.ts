@@ -10,10 +10,23 @@ import { SemesterRegistation } from './semesterRegistation.model';
 const createSemesterRegistationIntoDb = async (
   payload: TSemesterRegistation,
 ) => {
+  // check is there any upcoming or ongoing semester or not
+  const isThereAnyUpcomingOrOngoingSemester = await SemesterRegistation.findOne(
+    { $or: [{ status: 'UPCOMING' }, { status: 'ONGOING' }] },
+  );
+
+  if (isThereAnyUpcomingOrOngoingSemester) {
+    throw new AppError(
+      httpStatus.CONFLICT,
+      `There is already an ${isThereAnyUpcomingOrOngoingSemester.status} registered semester!`,
+    );
+  }
+
   const academicSemester = payload?.academicSemester;
   const isSemesterRegistationIsAlreadyExist = await SemesterRegistation.findOne(
     { academicSemester },
   );
+
   // check if semester registation is already done
   if (isSemesterRegistationIsAlreadyExist) {
     throw new AppError(
@@ -54,6 +67,28 @@ const getSingleSemesterRegistationFromDB = async (id: string) => {
 
   return result;
 };
+
+// const updateSemesterRegistationIntoDb = async (
+//   id: string,
+//   payload: Partial<TSemesterRegistation>,
+// ) => {
+//   const isSemesterRegistationExist = await SemesterRegistation.findById(id);
+
+//   if (isSemesterRegistationExist) {
+//     throw new AppError(httpStatus.NOT_FOUND, 'This semester is not found!');
+//   }
+
+//   const currentSemesterStatus = isSemesterRegistationExist?.status;
+
+//   if (currentSemesterStatus === 'ENDED') {
+//     throw new AppError(
+//       httpStatus.NOT_FOUND,
+//       `This semester registation is ended!`,
+//     );
+//   }
+
+//   console.log(payload);
+// };
 
 export const semesterRegistationServices = {
   createSemesterRegistationIntoDb,
