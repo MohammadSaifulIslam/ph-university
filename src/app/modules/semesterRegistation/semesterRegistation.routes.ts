@@ -9,5 +9,9 @@ router.post(
 );
 router.get('/', semesterRegistationControllers.getAllSemesterRegistation);
 router.get('/:id', semesterRegistationControllers.getSingleSemesterRegistation);
+router.patch(
+  '/:id',
+  semesterRegistationControllers.updateSemesterRegistation,
+);
 
-export const semesterRegistation = router;
+export const semesterRegistationRoute = router;
