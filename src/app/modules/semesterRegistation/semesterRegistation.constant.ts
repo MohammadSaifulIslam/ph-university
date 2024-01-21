@@ -1,4 +1,4 @@
-export const semesterRegistationStatus = {
+export const semesterRegistrationStatus = {
   UPCOMING: 'UPCOMING',
   ONGOING: 'ONGOING',
   ENDED: 'ENDED',

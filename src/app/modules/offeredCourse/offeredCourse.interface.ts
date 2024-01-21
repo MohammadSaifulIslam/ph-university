@@ -9,8 +9,8 @@ type Days =
   | 'Sunday';
 
 export type TOfferedCourse = {
-  semesterRegistation: Types.ObjectId;
-  academicSemester: Types.ObjectId;
+  semesterRegistration: Types.ObjectId;
+  academicSemester?: Types.ObjectId;
   academicFaculty: Types.ObjectId;
   academicDepartment: Types.ObjectId;
   course: Types.ObjectId;
@@ -18,6 +18,6 @@ export type TOfferedCourse = {
   maxCapacity: number;
   section: number;
   days: Days[];
-  startDate: string;
-  endDate: string;
+  startTime: string;
+  endTime: string;
 };

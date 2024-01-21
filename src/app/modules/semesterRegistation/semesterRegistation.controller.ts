@@ -1,57 +1,59 @@
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
-import { semesterRegistationServices } from './semesterRegistation.service';
+import { semesterRegistrationServices } from './semesterRegistation.service';
 
-const createSemesterRegistation = catchAsync(async (req, res) => {
+const createSemesterRegistration = catchAsync(async (req, res) => {
   const result =
-    await semesterRegistationServices.createSemesterRegistationIntoDb(req.body);
+    await semesterRegistrationServices.createSemesterRegistrationIntoDb(
+      req.body,
+    );
 
   res.status(httpStatus.OK).json({
     success: true,
-    message: 'Semester Registation is created succesfully',
+    message: 'Semester Registration is created succesfully',
     data: result,
   });
 });
-const getAllSemesterRegistation = catchAsync(async (req, res) => {
+const getAllSemesterRegistration = catchAsync(async (req, res) => {
   const query = req.query;
   const result =
-    await semesterRegistationServices.getAllSemesterRegistationFromDB(query);
+    await semesterRegistrationServices.getAllSemesterRegistrationFromDB(query);
 
   res.status(httpStatus.OK).json({
     success: true,
-    message: 'Semester Registations is retrieved succesfully',
+    message: 'Semester Registrations is retrieved succesfully',
     data: result,
   });
 });
-const getSingleSemesterRegistation = catchAsync(async (req, res) => {
+const getSingleSemesterRegistration = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result =
-    await semesterRegistationServices.getSingleSemesterRegistationFromDB(id);
+    await semesterRegistrationServices.getSingleSemesterRegistrationFromDB(id);
 
   res.status(httpStatus.OK).json({
     success: true,
-    message: 'Semester Registations is retrieved succesfully',
+    message: 'Semester Registrations is retrieved succesfully',
     data: result,
   });
 });
-const updateSemesterRegistation = catchAsync(async (req, res) => {
+const updateSemesterRegistration = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result =
-    await semesterRegistationServices.updateSemesterRegistationIntoDb(
+    await semesterRegistrationServices.updateSemesterRegistrationIntoDb(
       id,
       req.body,
     );
 
   res.status(httpStatus.OK).json({
     success: true,
-    message: 'Semester Registations is retrieved succesfully',
+    message: 'Semester Registrations is retrieved succesfully',
     data: result,
   });
 });
 
-export const semesterRegistationControllers = {
-  createSemesterRegistation,
-  getAllSemesterRegistation,
-  getSingleSemesterRegistation,
-  updateSemesterRegistation,
+export const semesterRegistrationControllers = {
+  createSemesterRegistration,
+  getAllSemesterRegistration,
+  getSingleSemesterRegistration,
+  updateSemesterRegistration,
 };

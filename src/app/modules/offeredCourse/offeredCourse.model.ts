@@ -3,10 +3,10 @@ import { Days } from './offeredCourse.constant';
 import { TOfferedCourse } from './offeredCourse.interface';
 
 const offeredCourseSchema = new Schema<TOfferedCourse>({
-  semesterRegistation: {
+  semesterRegistration: {
     type: Schema.Types.ObjectId,
     required: [true, 'Semester registration is required.'],
-    ref: 'SemesterRegistation',
+    ref: 'SemesterRegistration',
   },
   academicSemester: {
     type: Schema.Types.ObjectId,
@@ -48,8 +48,8 @@ const offeredCourseSchema = new Schema<TOfferedCourse>({
     ],
     required: [true, 'Days are required.'],
   },
-  startDate: { type: String, required: [true, 'Start date is required.'] },
-  endDate: { type: String, required: [true, 'End date is required.'] },
+  startTime: { type: String, required: [true, 'Start Time is required.'] },
+  endTime: { type: String, required: [true, 'End Time is required.'] },
 });
 
 export const OfferedCourse = model<TOfferedCourse>(

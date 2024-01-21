@@ -1,17 +1,20 @@
 import express from 'express';
-import { semesterRegistationControllers } from './semesterRegistation.controller';
+import { semesterRegistrationControllers } from './semesterRegistation.controller';
 
 const router = express.Router();
 
 router.post(
-  '/create-semesterRegistation',
-  semesterRegistationControllers.createSemesterRegistation,
+  '/create-semesterRegistration',
+  semesterRegistrationControllers.createSemesterRegistration,
 );
-router.get('/', semesterRegistationControllers.getAllSemesterRegistation);
-router.get('/:id', semesterRegistationControllers.getSingleSemesterRegistation);
+router.get('/', semesterRegistrationControllers.getAllSemesterRegistration);
+router.get(
+  '/:id',
+  semesterRegistrationControllers.getSingleSemesterRegistration,
+);
 router.patch(
   '/:id',
-  semesterRegistationControllers.updateSemesterRegistation,
+  semesterRegistrationControllers.updateSemesterRegistration,
 );
 
-export const semesterRegistationRoute = router;
+export const semesterRegistrationRoute = router;
