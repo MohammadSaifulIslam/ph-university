@@ -8,6 +8,7 @@ import { Faculty } from '../faculty/faculty.model';
 import { SemesterRegistration } from '../semesterRegistation/semesterRegistation.model';
 import { TOfferedCourse } from './offeredCourse.interface';
 import { OfferedCourse } from './offeredCourse.model';
+import { hasTimeConflict } from './offeredCourse.utils';
 
 const createOfferedCourseIntoDb = async (payload: TOfferedCourse) => {
   const {
@@ -19,6 +20,7 @@ const createOfferedCourseIntoDb = async (payload: TOfferedCourse) => {
     section,
     startTime,
     endTime,
+    days,
   } = payload;
 
   // check if the start time is before the end time
@@ -93,6 +95,27 @@ const createOfferedCourseIntoDb = async (payload: TOfferedCourse) => {
     );
   }
 
+  // time conflict with the faculty
+
+  const existingSchedule = await OfferedCourse.find({
+    semesterRegistration,
+    faculty,
+    days: { $in: days },
+  }).select('days startTime endTime');
+
+  const newSchedule = {
+    days,
+    startTime,
+    endTime,
+  };
+
+  if (hasTimeConflict(existingSchedule, newSchedule)) {
+    throw new AppError(
+      httpStatus.CONFLICT,
+      `There is time conflict for Faculty ! Please choose another time or day `,
+    );
+  }
+  console.log(existingSchedule);
   const result = await OfferedCourse.create({ ...payload, academicSemester });
   return result;
 };

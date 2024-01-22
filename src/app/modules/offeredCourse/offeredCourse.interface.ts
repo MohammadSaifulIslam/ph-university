@@ -21,3 +21,10 @@ export type TOfferedCourse = {
   startTime: string;
   endTime: string;
 };
+
+export type TSchedule = {
+  _id?: Types.ObjectId;
+  days: string[];
+  startTime: string;
+  endTime: string;
+};
