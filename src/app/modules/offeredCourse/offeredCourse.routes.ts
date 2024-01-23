@@ -8,7 +8,12 @@ const router = express.Router();
 router.post(
   '/create-offered-course',
   validateRequest(offeredCourseValidations.createOfferedCourseValidationSchema),
-  offeredCourseControllers.createOfferedCoures,
+  offeredCourseControllers.createOfferedCourse,
+);
+router.patch(
+  '/:id',
+  validateRequest(offeredCourseValidations.updateOfferedCourseValidationSchema),
+  offeredCourseControllers.updateOfferedCourse,
 );
 
 export const offeredCourseRoutes = router;

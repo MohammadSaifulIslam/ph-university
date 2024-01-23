@@ -1,9 +1,9 @@
 import bycript from 'bcrypt';
 import { Schema, model } from 'mongoose';
 import config from '../../config';
-import { TUser } from './users.interface';
+import { TUser, UserModel } from './users.interface';
 
-const userSchema = new Schema<TUser>(
+const userSchema = new Schema<TUser, UserModel>(
   {
     id: {
       type: String,
@@ -59,4 +59,25 @@ userSchema.post('save', async (doc, next) => {
   doc.password = '';
   next();
 });
-export const User = model<TUser>('User', userSchema);
+
+userSchema.statics.isUserExistsByCustomId = async function (id: string) {
+  return await User.findOne({ id }).select('+password');
+};
+
+userSchema.statics.isPasswordMatched = async function (
+  plainTextPassword,
+  hashedPassword,
+) {
+  return await bycript.compare(plainTextPassword, hashedPassword);
+};
+
+userSchema.statics.isJWTIssuedBeforePasswordChanged = function (
+  passwordChangedTimestamp: Date,
+  jwtIssuedTimestamp: number,
+) {
+  const passwordChangedTime =
+    new Date(passwordChangedTimestamp).getTime() / 1000;
+  return passwordChangedTime > jwtIssuedTimestamp;
+};
+
+export const User = model<TUser, UserModel>('User', userSchema);

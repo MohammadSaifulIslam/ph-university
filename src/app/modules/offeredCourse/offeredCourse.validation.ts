@@ -42,6 +42,23 @@ const createOfferedCourseValidationSchema = z.object({
   endTime: timeStringSchema,
 });
 
+const updateOfferedCourseValidationSchema = z.object({
+  faculty: z
+    .string()
+    .refine((val) => val.length > 0, { message: 'Faculty is required.' }),
+  maxCapacity: z.number().refine((val) => val > 0, {
+    message: 'Maximum capacity must be greater than 0.',
+  }),
+  days: z.array(
+    z
+      .string()
+      .refine((val) => [...Days].includes(val), { message: 'Invalid day.' }),
+  ),
+  startTime: timeStringSchema,
+  endTime: timeStringSchema,
+});
+
 export const offeredCourseValidations = {
   createOfferedCourseValidationSchema,
+  updateOfferedCourseValidationSchema,
 };
