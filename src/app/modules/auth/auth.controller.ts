@@ -14,7 +14,7 @@ const loginUser = catchAsync(async (req, res) => {
 
   res.status(httpStatus.OK).json({
     success: true,
-    message: 'Course is created succesfully',
+    message: 'User login succesfully',
     data: {
       accessToken,
       needsPasswordChange,
@@ -37,10 +37,20 @@ const changePassword = catchAsync(async (req, res) => {
 const refreshToken = catchAsync(async (req, res) => {
   const { refreshToken } = req.cookies;
   const result = await AuthServices.refreshToken(refreshToken);
-
   res.status(httpStatus.OK).json({
     success: true,
     message: 'Access token is retrieved succesfully!',
+    data: result,
+  });
+});
+
+const forgetPassword = catchAsync(async (req, res) => {
+  const userId = req.body.id;
+  const result = await AuthServices.forgetPassword(userId);
+
+  res.status(httpStatus.OK).json({
+    success: true,
+    message: 'Reset link is generated succesfully!',
     data: result,
   });
 });
@@ -49,4 +59,5 @@ export const AuthControllers = {
   loginUser,
   changePassword,
   refreshToken,
+  forgetPassword,
 };
