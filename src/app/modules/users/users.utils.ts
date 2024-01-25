@@ -9,7 +9,7 @@ const findLastUserId = async () => {
     .lean();
   return result?.id ? result.id : undefined;
 };
-export const genarateId = async (payload: TAcademicSemester) => {
+export const generateStudentId = async (payload: TAcademicSemester) => {
   let currentId = (0).toString();
   // id = 2030 01 0001
   const lastStudentId = await findLastUserId();

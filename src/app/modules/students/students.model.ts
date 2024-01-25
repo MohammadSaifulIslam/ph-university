@@ -91,7 +91,7 @@ const StudentSchema = new Schema<TStudent>(
       type: Boolean,
       default: false,
     },
-    profileImage: {
+    profileImg: {
       type: String,
       required: [true, 'Profile Image is required'],
     },

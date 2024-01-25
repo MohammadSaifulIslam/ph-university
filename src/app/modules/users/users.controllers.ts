@@ -4,9 +4,13 @@ import catchAsync from '../../utils/catchAsync';
 import { userServices } from './users.services';
 
 const createStudent = catchAsync(async (req, res) => {
-  const { password, student } = req.body;
-  // will call service function
-  const result = await userServices.createStudentIntoDB(password, student);
+  const { password, student: studentData } = req.body;
+  console.log('hit-------------');
+  const result = await userServices.createStudentIntoDB(
+    req.file,
+    password,
+    studentData,
+  );
   // will send response data
   res.status(200).json({
     status: true,
@@ -18,7 +22,11 @@ const createStudent = catchAsync(async (req, res) => {
 const createFaculty = catchAsync(async (req, res) => {
   const { password, faculty: facultyData } = req.body;
 
-  const result = await userServices.createFacultyIntoDB(password, facultyData);
+  const result = await userServices.createFacultyIntoDB(
+    req.file,
+    password,
+    facultyData,
+  );
 
   res.status(200).json({
     status: true,
@@ -30,8 +38,11 @@ const createFaculty = catchAsync(async (req, res) => {
 const createAdmin = catchAsync(async (req, res) => {
   const { password, admin: adminData } = req.body;
 
-  const result = await userServices.createAdminIntoDB(password, adminData);
-
+  const result = await userServices.createAdminIntoDB(
+    req.file,
+    password,
+    adminData,
+  );
   res.status(200).json({
     status: true,
     message: 'Admin data created successfully',

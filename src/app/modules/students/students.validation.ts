@@ -18,7 +18,7 @@ const createLocalGuardianValidationSchema = z.object({
 });
 
 const createStudentValidationSchema = z.object({
-  password: z.string().min(8),
+  password: z.string().min(8).optional(),
   student: z.object({
     name: z.object({
       firstName: z.string().min(1).max(255),
@@ -34,7 +34,6 @@ const createStudentValidationSchema = z.object({
     permanentAddress: z.string().min(1).max(500),
     gaurdian: createGaurdianValidationSchema,
     localGuardian: createLocalGuardianValidationSchema,
-    profileImage: z.string(),
     admissionSemester: z.string(),
   }),
 });
@@ -74,7 +73,7 @@ const updateStudentValidationSchema = z.object({
     permanentAddress: z.string().min(1).max(500).optional(),
     gaurdian: updateGaurdianValidationSchema.optional(),
     localGuardian: updateLocalGuardianValidationSchema.optional(),
-    profileImage: z.string().optional(),
+    profileImg: z.string().optional(),
     admissionSemester: z.string().optional(),
   }),
 });
