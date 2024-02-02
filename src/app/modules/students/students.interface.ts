@@ -1,6 +1,6 @@
 import { Types } from 'mongoose';
 
-export type TGaurdian = {
+export type TGuardian = {
   fatherName: string;
   fatherOccupation: string;
   fatherContactNo: string;
@@ -31,7 +31,7 @@ export type TStudent = {
   dateOfBirth: string;
   presentAddress: string;
   permanentAddress: string;
-  gaurdian: TGaurdian;
+  guardian: TGuardian;
   localGuardian: TLocalGuardian;
   profileImg: string;
   isDeleted: boolean;

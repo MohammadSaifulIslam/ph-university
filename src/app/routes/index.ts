@@ -61,7 +61,7 @@ const pathRouter = [
     route: AuthRoutes,
   },
   {
-    path: '/enrolled-coursed',
+    path: '/enrolled-courses',
     route: EnrolledCourseRoutes,
   },
 ];

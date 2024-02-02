@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const createGaurdianValidationSchema = z.object({
+const createGuardianValidationSchema = z.object({
   fatherName: z.string().min(1).max(255),
   fatherOccupation: z.string().min(1).max(255),
   fatherContactNo: z.string().min(1).max(20),
@@ -32,13 +32,13 @@ const createStudentValidationSchema = z.object({
     dateOfBirth: z.string().min(1).max(255),
     presentAddress: z.string().min(1).max(500),
     permanentAddress: z.string().min(1).max(500),
-    gaurdian: createGaurdianValidationSchema,
+    guardian: createGuardianValidationSchema,
     localGuardian: createLocalGuardianValidationSchema,
     admissionSemester: z.string(),
   }),
 });
 
-const updateGaurdianValidationSchema = z.object({
+const updateGuardianValidationSchema = z.object({
   fatherName: z.string().min(1).max(255).optional(),
   fatherOccupation: z.string().min(1).max(255).optional(),
   fatherContactNo: z.string().min(1).max(20).optional(),
@@ -71,7 +71,7 @@ const updateStudentValidationSchema = z.object({
     dateOfBirth: z.string().min(1).max(255).optional(),
     presentAddress: z.string().min(1).max(500).optional(),
     permanentAddress: z.string().min(1).max(500).optional(),
-    gaurdian: updateGaurdianValidationSchema.optional(),
+    guardian: updateGuardianValidationSchema.optional(),
     localGuardian: updateLocalGuardianValidationSchema.optional(),
     profileImg: z.string().optional(),
     admissionSemester: z.string().optional(),

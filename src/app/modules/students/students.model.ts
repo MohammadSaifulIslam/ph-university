@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
-import { TGaurdian, TLocalGuardian, TStudent } from './students.interface';
+import { TGuardian, TLocalGuardian, TStudent } from './students.interface';
 
-const GaurdianSchema = new Schema<TGaurdian>({
+const GuardianSchema = new Schema<TGuardian>({
   fatherName: { type: String, required: [true, 'Father name is required'] },
   fatherOccupation: {
     type: String,
@@ -105,8 +105,8 @@ const StudentSchema = new Schema<TStudent>(
       ref: 'AcademicDepartment',
       required: [true, 'Academic Department is required'],
     },
-    gaurdian: {
-      type: GaurdianSchema,
+    guardian: {
+      type: GuardianSchema,
       required: [true, 'Guardian information is required'],
     },
     localGuardian: {
