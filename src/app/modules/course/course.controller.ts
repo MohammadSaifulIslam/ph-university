@@ -28,7 +28,7 @@ const getAllCourse = catchAsync(async (req, res) => {
 
   res.status(httpStatus.OK).json({
     success: true,
-    message: 'Faculties are retrieved succesfully',
+    message: 'Courses are retrieved succesfully',
     data: result,
   });
 });

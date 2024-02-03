@@ -82,8 +82,13 @@ const facultySchema = new Schema<TFaculty, FacultyModel>(
     },
     academicDepartment: {
       type: Schema.Types.ObjectId,
-      required: [true, 'User id is required'],
-      ref: 'User',
+      required: [true, 'Academic department id is required'],
+      ref: 'AcademicDepartment',
+    },
+    academicFaculty: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'Academic faculty id is required'],
+      ref: 'AcademicFaculty',
     },
     isDeleted: {
       type: Boolean,
@@ -101,9 +106,9 @@ const facultySchema = new Schema<TFaculty, FacultyModel>(
 facultySchema.virtual('fullName').get(function () {
   return (
     this?.name?.firstName +
-    '' +
+    ' ' +
     this?.name?.middleName +
-    '' +
+    ' ' +
     this?.name?.lastName
   );
 });

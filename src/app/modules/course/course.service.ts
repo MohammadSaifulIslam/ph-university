@@ -20,7 +20,12 @@ const getAllCourseFromDb = async (query: Record<string, unknown>) => {
   const result = await courseQuery.modelQuery.populate(
     'preRequisiteCourses.course',
   );
-  return result;
+  const meta = await courseQuery.countTotal();
+
+  return {
+    meta,
+    result,
+  };
 };
 
 const getSingleCourseFromDb = async (id: string) => {

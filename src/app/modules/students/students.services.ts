@@ -35,7 +35,7 @@ const getSingleStudentFromDb = async (id: string) => {
 };
 
 const updateSingleStudentintoDb = async (id: string, payload: TStudent) => {
-  const { name, gaurdian, localGuardian, ...remaingStudentData } = payload;
+  const { name, guardian, localGuardian, ...remaingStudentData } = payload;
   const modifiedStudent: Record<string, unknown> = { ...remaingStudentData };
 
   if (name && Object.keys(name).length) {
@@ -43,9 +43,9 @@ const updateSingleStudentintoDb = async (id: string, payload: TStudent) => {
       modifiedStudent[`name.${key}`] = value;
     }
   }
-  if (gaurdian && Object.keys(gaurdian).length) {
-    for (const [key, value] of Object.entries(gaurdian)) {
-      modifiedStudent[`gaurdian.${key}`] = value;
+  if (guardian && Object.keys(guardian).length) {
+    for (const [key, value] of Object.entries(guardian)) {
+      modifiedStudent[`guardian.${key}`] = value;
     }
   }
   if (localGuardian && Object.keys(localGuardian).length) {
