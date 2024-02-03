@@ -4,7 +4,7 @@ import { semesterRegistrationControllers } from './semesterRegistation.controlle
 const router = express.Router();
 
 router.post(
-  '/create-semesterRegistration',
+  '/create-semester-registration',
   semesterRegistrationControllers.createSemesterRegistration,
 );
 router.get('/', semesterRegistrationControllers.getAllSemesterRegistration);
