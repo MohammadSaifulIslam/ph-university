@@ -93,7 +93,7 @@ const StudentSchema = new Schema<TStudent>(
     },
     profileImg: {
       type: String,
-      required: [true, 'Profile Image is required'],
+      default: '',
     },
     admissionSemester: {
       type: Schema.Types.ObjectId,
@@ -104,6 +104,11 @@ const StudentSchema = new Schema<TStudent>(
       type: Schema.Types.ObjectId,
       ref: 'AcademicDepartment',
       required: [true, 'Academic Department is required'],
+    },
+    academicFaculty: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicFaculty',
+      required: [true, 'Academic Faculty is required'],
     },
     guardian: {
       type: GuardianSchema,
