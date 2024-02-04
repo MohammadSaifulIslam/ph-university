@@ -126,6 +126,11 @@ const createFacultyIntoCourseIntoDb = async (
   return result;
 };
 
+const getFacultyWithCourseFromDb = async (courseId: string) => {
+  const result = await CourseFaculty.findById(courseId);
+  return result;
+};
+
 const deleteFacultyFromCourseFromDb = async (
   id: string,
   payload: Partial<TCourseFaculty>,
@@ -148,5 +153,6 @@ export const courseServices = {
   updateCourseIntoDb,
   deleteCourseFromDb,
   createFacultyIntoCourseIntoDb,
+  getFacultyWithCourseFromDb,
   deleteFacultyFromCourseFromDb,
 };
