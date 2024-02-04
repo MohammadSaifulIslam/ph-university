@@ -1,6 +1,7 @@
 import express from 'express';
 import auth from '../../middlewers/auth';
 import validateRequest from '../../middlewers/validateRequest';
+import { USER_ROLE } from '../users/users.constant';
 import { EnrolledCourseControllers } from './enrolledCourse.contoller';
 import { EnrolledCourseValidations } from './enrolledCourse.validation';
 
@@ -8,7 +9,7 @@ const router = express.Router();
 
 router.post(
   '/create-enrolled-course',
-  auth('student'),
+  auth(USER_ROLE.student),
   validateRequest(
     EnrolledCourseValidations.createEnrolledCourseValidationZodSchema,
   ),
@@ -16,13 +17,13 @@ router.post(
 );
 router.get(
   '/my-enrolled-courses',
-  auth('student'),
+  auth(USER_ROLE.student),
   EnrolledCourseControllers.getMyEnrolledCourses,
 );
 
 router.patch(
   '/update-enrolled-course-marks',
-  auth('faculty'),
+  auth(USER_ROLE.faculty),
   validateRequest(
     EnrolledCourseValidations.updateEnrolledCourseMarksValidationZodSchema,
   ),

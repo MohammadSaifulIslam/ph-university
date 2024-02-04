@@ -7,17 +7,20 @@ const createAcademicFaculty = catchAsync(async (req, res) => {
   );
   res.status(200).json({
     status: true,
-    message: 'Academic Faculty created successfully',
+    message: 'Academic Faculty is created successfully',
     data: result,
   });
 });
 
 const getAllAcademicFaculty = catchAsync(async (req, res) => {
-  const result = await academicFacultyServices.getAllAcademicFacultyFromDb();
+  const result = await academicFacultyServices.getAllAcademicFacultyFromDb(
+    req.query,
+  );
   res.status(200).json({
     status: true,
-    message: 'Academic Faculty retrived successfully',
-    data: result,
+    message: 'Academic Faculty is retrived successfully',
+    meta: result.meta,
+    data: result.result,
   });
 });
 const getSingleAcademicFaculty = catchAsync(async (req, res) => {
@@ -26,7 +29,7 @@ const getSingleAcademicFaculty = catchAsync(async (req, res) => {
     await academicFacultyServices.getSingleAcademicFacultyFromDb(id);
   res.status(200).json({
     status: true,
-    message: 'Single Academic Faculty retrived successfully',
+    message: 'Single Academic Faculty is retrived successfully',
     data: result,
   });
 });
@@ -39,7 +42,7 @@ const updateAcademicFaculty = catchAsync(async (req, res) => {
 
   res.status(200).json({
     status: true,
-    message: 'Academic Faculty updated successfully',
+    message: 'Academic Faculty is updated successfully',
     data: result,
   });
 });

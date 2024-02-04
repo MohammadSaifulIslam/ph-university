@@ -9,14 +9,9 @@ import Student from './students.model';
 const getAllStudentFromDb = async (query: Record<string, unknown>) => {
   const studentSearchableFields = ['email', 'name.firstName', 'address'];
   const studentQuery = new QueryBuilder(
-    Student.find()
-      .populate('admissionSemester')
-      .populate({
-        path: 'academicDepartment',
-        populate: {
-          path: 'academicFaculty',
-        },
-      }),
+    Student.find().populate(
+      'admissionSemester academicDepartment academicFaculty',
+    ),
     query,
   )
     .search(studentSearchableFields)
@@ -26,7 +21,11 @@ const getAllStudentFromDb = async (query: Record<string, unknown>) => {
     .paginate();
 
   const result = await studentQuery.modelQuery;
-  return result;
+  const meta = await studentQuery.countTotal();
+  return {
+    meta,
+    result,
+  };
 };
 
 const getSingleStudentFromDb = async (id: string) => {
