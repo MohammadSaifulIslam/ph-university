@@ -19,6 +19,11 @@ router.get(
   auth(USER_ROLE.admin, USER_ROLE.superAdmin, USER_ROLE.faculty),
   offeredCourseControllers.getAllOfferedCourse,
 );
+router.get(
+  '/my-offered-courses',
+  auth(USER_ROLE.student),
+  offeredCourseControllers.getMyOfferedCourse,
+);
 
 router.get(
   '/:id',

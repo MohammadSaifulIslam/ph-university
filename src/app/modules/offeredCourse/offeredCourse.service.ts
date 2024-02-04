@@ -7,6 +7,7 @@ import { Faculty } from '../faculty/faculty.model';
 
 import QueryBuilder from '../../builder/QueryBuilder';
 import { SemesterRegistration } from '../semesterRegistation/semesterRegistation.model';
+import Student from '../students/students.model';
 import { TOfferedCourse } from './offeredCourse.interface';
 import { OfferedCourse } from './offeredCourse.model';
 import { hasTimeConflict } from './offeredCourse.utils';
@@ -145,6 +146,70 @@ const getSingleOfferedCourseFromDb = async (id: string) => {
 
   return isOfferedCourseExist;
 };
+const getMyOfferedCoursesFromDb = async (userId: string) => {
+  const student = await Student.findOne({ id: userId });
+  if (!student) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Student not found.');
+  }
+  // find current ongoing semester
+  const currentOngoingSemester = await SemesterRegistration.findOne({
+    status: 'ONGOING',
+  });
+
+  const result = await OfferedCourse.aggregate([
+    {
+      $match: {
+        semesterRegistration: currentOngoingSemester?._id,
+        academicFaculty: student.academicFaculty,
+        academicDepartment: student.academicDepartment,
+      },
+    },
+    {
+      $lookup: {
+        from: 'courses',
+        localField: 'course',
+        foreignField: '_id',
+        as: 'course',
+      },
+    },
+    {
+      $unwind: {
+        path: '$course',
+      },
+    },
+    {
+      $lookup: {
+        from: 'enrolledcourses',
+        let: {
+          currentOngoingSemester: currentOngoingSemester?._id,
+          currentStudent: student._id,
+        },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  {
+                    $eq: ['$semesterRegistration', '$$currentOngoingSemester'],
+                  },
+                  {
+                    $eq: ['$student', '$$currentStudent'],
+                  },
+                  {
+                    $eq: ['$isEnrolled', true],
+                  },
+                ],
+              },
+            },
+          },
+        ],
+        as: 'enrolledCourses',
+      },
+    },
+  ]);
+
+  return result;
+};
 
 const updateOfferedCourseFromDB = async (
   id: string,
@@ -237,6 +302,7 @@ export const offeredCouresServices = {
   createOfferedCourseIntoDb,
   getAllOfferedCoursesFromDB,
   getSingleOfferedCourseFromDb,
+  getMyOfferedCoursesFromDb,
   updateOfferedCourseFromDB,
   deleteOfferedCourseFromDB,
 };
