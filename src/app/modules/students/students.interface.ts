@@ -21,6 +21,7 @@ export type TStudent = {
   user: Types.ObjectId;
   name: {
     firstName: string;
+    middleName: string;
     lastName: string;
   };
   email: string;

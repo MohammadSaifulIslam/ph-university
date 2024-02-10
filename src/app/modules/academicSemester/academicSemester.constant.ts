@@ -6,4 +6,9 @@ export const academicSemesterMapper: TAcademicSemesterCode = {
   Fall: '03',
 };
 
-export const AcademicSemesterSearchableFields = ['name', 'year'];
+export const AcademicSemesterSearchableFields = [
+  'name',
+  'year',
+  'startMonth',
+  'endMonth',
+];

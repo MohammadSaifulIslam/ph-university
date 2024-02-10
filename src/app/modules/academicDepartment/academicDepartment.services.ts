@@ -13,7 +13,11 @@ const getAllAcademicDepartmentFromDb = async (
   const academicDepartmentQuery = new QueryBuilder(
     AcademicDepartment.find(),
     query,
-  );
+  )
+    .fields()
+    .filter()
+    .sort()
+    .paginate();
   const result =
     await academicDepartmentQuery.modelQuery.populate('academicFaculty');
   const meta = await academicDepartmentQuery.countTotal();

@@ -22,6 +22,7 @@ const createStudentValidationSchema = z.object({
   student: z.object({
     name: z.object({
       firstName: z.string().min(1).max(255),
+      middleName: z.string().min(1).max(255),
       lastName: z.string().min(1).max(255),
     }),
     email: z.string().min(1).max(255).email(),
@@ -59,6 +60,7 @@ const updateStudentValidationSchema = z.object({
   student: z.object({
     name: z.object({
       firstName: z.string().min(1).max(255).optional(),
+      middleName: z.string().min(1).max(255).optional(),
       lastName: z.string().min(1).max(255).optional(),
     }),
     email: z.string().min(1).max(255).email().optional(),

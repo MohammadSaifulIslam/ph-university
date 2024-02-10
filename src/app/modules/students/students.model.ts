@@ -56,6 +56,7 @@ const StudentSchema = new Schema<TStudent>(
         type: String,
         required: [true, 'First name is required'],
       },
+      middleName: { type: String, required: [true, 'Middle name is required'] },
       lastName: { type: String, required: [true, 'Last name is required'] },
     },
     email: {
