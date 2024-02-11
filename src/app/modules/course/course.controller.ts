@@ -73,7 +73,7 @@ const assignCourseWithFaculty = catchAsync(async (req, res) => {
 const getCourseWithFaculty = catchAsync(async (req, res) => {
   const { courseId } = req.params;
   const result = await courseServices.getFacultyWithCourseFromDb(courseId);
-
+  console.log(result);
   res.status(httpStatus.OK).json({
     success: true,
     message: 'Faculties are retrived succesfully',

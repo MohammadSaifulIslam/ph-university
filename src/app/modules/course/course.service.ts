@@ -127,7 +127,10 @@ const createFacultyIntoCourseIntoDb = async (
 };
 
 const getFacultyWithCourseFromDb = async (courseId: string) => {
-  const result = await CourseFaculty.findOne({ course: courseId });
+  console.log(courseId);
+  const result = await CourseFaculty.findOne({ course: courseId }).populate(
+    'faculties course',
+  );
   return result;
 };
 

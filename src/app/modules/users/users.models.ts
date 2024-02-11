@@ -21,7 +21,7 @@ const userSchema = new Schema<TUser, UserModel>(
     },
     needsPasswordChange: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     role: {
       type: String,

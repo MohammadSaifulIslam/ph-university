@@ -85,7 +85,7 @@ const changePassword = async (
   const userStatus = user?.status;
 
   if (userStatus === 'blocked') {
-    throw new AppError(httpStatus.FORBIDDEN, 'This user is blocked ! !');
+    throw new AppError(httpStatus.FORBIDDEN, 'This user is blocked !');
   }
 
   //checking if the password is correct
