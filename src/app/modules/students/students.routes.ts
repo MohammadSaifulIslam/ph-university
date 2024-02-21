@@ -24,6 +24,13 @@ router.patch(
   studentControllers.updateStudent,
 );
 router.patch(
+  '/update-my-info',
+  auth(USER_ROLE.student),
+  validateRequest(studentValidations.updateStudentValidationSchema),
+  studentControllers.updateMyInfo,
+);
+
+router.delete(
   '/:id',
   auth(USER_ROLE.admin, USER_ROLE.superAdmin),
   studentControllers.deleteSingleStudent,

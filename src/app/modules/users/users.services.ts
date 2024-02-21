@@ -66,8 +66,8 @@ const createStudentIntoDB = async (
       const imageName = `${userData.id}${payload?.name?.firstName}`;
       const path = file?.path;
       //send image to cloudinary
-      const { secure_url } = await sendImageToCloudinary(imageName, path);
-      payload.profileImg = secure_url as string;
+      const { url } = await sendImageToCloudinary(imageName, path);
+      payload.profileImg = url as string;
     }
 
     // create a user (transaction-1)
@@ -237,14 +237,18 @@ const getMe = async (userId: string, role: string) => {
 
   let result = null;
   if (role === 'student') {
-    result = await Student.findOne({ id: userId }).populate('user');
+    result = await Student.findOne({ id: userId }).populate(
+      'user admissionSemester academicFaculty academicDepartment',
+    );
   }
   if (role === 'admin') {
     result = await Admin.findOne({ id: userId }).populate('user');
   }
 
   if (role === 'faculty') {
-    result = await Faculty.findOne({ id: userId }).populate('user');
+    result = await Faculty.findOne({ id: userId }).populate(
+      'user academicFaculty academicDepartment',
+    );
   }
 
   return result;

@@ -10,7 +10,7 @@ const getAllStudentFromDb = async (query: Record<string, unknown>) => {
   const studentSearchableFields = ['email', 'name.firstName', 'address'];
   const studentQuery = new QueryBuilder(
     Student.find().populate(
-      'admissionSemester academicDepartment academicFaculty',
+      'admissionSemester academicDepartment academicFaculty user',
     ),
     query,
   )
@@ -30,6 +30,43 @@ const getAllStudentFromDb = async (query: Record<string, unknown>) => {
 
 const getSingleStudentFromDb = async (id: string) => {
   const result = await Student.findById(id);
+  return result;
+};
+
+const updateMyInfoIntoDb = async (userId: string, payload: TStudent) => {
+  const isStudentExists = await Student.findOne({ id: userId });
+  if (!isStudentExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Student not found!');
+  }
+
+  const { name, guardian, localGuardian, ...remaingStudentData } = payload;
+  const modifiedStudent: Record<string, unknown> = { ...remaingStudentData };
+
+  if (name && Object.keys(name).length) {
+    for (const [key, value] of Object.entries(name)) {
+      modifiedStudent[`name.${key}`] = value;
+    }
+  }
+  if (guardian && Object.keys(guardian).length) {
+    for (const [key, value] of Object.entries(guardian)) {
+      modifiedStudent[`guardian.${key}`] = value;
+    }
+  }
+  if (localGuardian && Object.keys(localGuardian).length) {
+    for (const [key, value] of Object.entries(localGuardian)) {
+      modifiedStudent[`localGuardian.${key}`] = value;
+    }
+  }
+
+  const result = await Student.findByIdAndUpdate(
+    isStudentExists._id,
+    modifiedStudent,
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
+
   return result;
 };
 
@@ -97,4 +134,5 @@ export const studentServices = {
   getSingleStudentFromDb,
   deleteStudentFronDb,
   updateSingleStudentintoDb,
+  updateMyInfoIntoDb,
 };

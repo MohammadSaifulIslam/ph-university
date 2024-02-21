@@ -57,27 +57,25 @@ const updateLocalGuardianValidationSchema = z.object({
 });
 
 const updateStudentValidationSchema = z.object({
-  student: z.object({
-    name: z.object({
-      firstName: z.string().min(1).max(255).optional(),
-      middleName: z.string().min(1).max(255).optional(),
-      lastName: z.string().min(1).max(255).optional(),
-    }),
-    email: z.string().min(1).max(255).email().optional(),
-    contactNo: z.string().min(1).max(20).optional(),
-    emergencyContactNo: z.string().min(1).max(20).optional(),
-    gender: z.enum(['male', 'female', 'other']).optional(),
-    bloodGroup: z
-      .enum(['A+', 'A-', 'AB+', 'AB-', 'B+', 'B-', 'O+', 'O-'])
-      .optional(),
-    dateOfBirth: z.string().min(1).max(255).optional(),
-    presentAddress: z.string().min(1).max(500).optional(),
-    permanentAddress: z.string().min(1).max(500).optional(),
-    guardian: updateGuardianValidationSchema.optional(),
-    localGuardian: updateLocalGuardianValidationSchema.optional(),
-    profileImg: z.string().optional(),
-    admissionSemester: z.string().optional(),
+  name: z.object({
+    firstName: z.string().min(1).max(255).optional(),
+    middleName: z.string().min(1).max(255).optional(),
+    lastName: z.string().min(1).max(255).optional(),
   }),
+  email: z.string().min(1).max(255).email().optional(),
+  contactNo: z.string().min(1).max(20).optional(),
+  emergencyContactNo: z.string().min(1).max(20).optional(),
+  gender: z.enum(['male', 'female', 'other']).optional(),
+  bloodGroup: z
+    .enum(['A+', 'A-', 'AB+', 'AB-', 'B+', 'B-', 'O+', 'O-'])
+    .optional(),
+  dateOfBirth: z.string().min(1).max(255).optional(),
+  presentAddress: z.string().min(1).max(500).optional(),
+  permanentAddress: z.string().min(1).max(500).optional(),
+  guardian: updateGuardianValidationSchema.optional(),
+  localGuardian: updateLocalGuardianValidationSchema.optional(),
+  profileImg: z.string().optional(),
+  admissionSemester: z.string().optional(),
 });
 
 export const studentValidations = {

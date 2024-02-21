@@ -294,6 +294,17 @@ const getMyOfferedCoursesFromDb = async (
         isPreRequisitesFulFilled: true,
       },
     },
+    {
+      $lookup: {
+        from: 'faculties',
+        localField: 'faculty',
+        foreignField: '_id',
+        as: 'faculty',
+      },
+    },
+    {
+      $unwind: '$faculty',
+    },
   ];
 
   const paginationQuery = [
